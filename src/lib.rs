@@ -268,6 +268,7 @@ pub mod gen;
 pub mod granular;
 pub mod hacker;
 pub mod hacker32;
+pub mod hrtf;
 pub mod linear_algebra;
 pub mod math;
 pub mod moog;
