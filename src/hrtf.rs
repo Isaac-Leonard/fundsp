@@ -179,17 +179,17 @@ impl Hrtf {
             .unwrap_or_else(|| Vec3::new(0.0, 0.0, 1.0))
     }
 
-    fn process_block(&mut self) -> Vec<(f32, f32)> {
+    /// fills the output buffer with new audio data derived from the input buffer
+    // #panics if self.fill_to is not at the end of the output buffer
+    fn process_block(&mut self) {
         // This is only called in one place but good to defend against future changes
         assert!(self.filled_to == self.buffer.len());
         let new_distance_gain = self.get_distance_gain();
         let new_sampling_vector = self.get_sampling_vector();
 
-        let mut output = Vec::with_capacity(HRTF_BLOCK_LEN * HRTF_INTERPOLATION_STEPS);
-
         self.processor.process_samples(hrtf::HrtfContext {
             source: &self.buffer,
-            output: &mut output,
+            output: &mut self.output_buffer,
             new_sample_vector: new_sampling_vector.into(),
             prev_sample_vector: self.prev_sampling_vector.into(),
             prev_left_samples: &mut self.prev_left_samples,
@@ -200,8 +200,6 @@ impl Hrtf {
 
         self.prev_sampling_vector = new_sampling_vector;
         self.prev_distance_gain = Some(new_distance_gain);
-
-        output
     }
 }
 
@@ -224,7 +222,7 @@ impl AudioNode for Hrtf {
         self.buffer[self.filled_to] = input[0];
         self.filled_to += 1;
         if self.filled_to == self.buffer.len() {
-            self.output_buffer = self.process_block();
+            self.process_block();
             self.buffer.fill(0.);
             self.filled_to = 0;
         }
