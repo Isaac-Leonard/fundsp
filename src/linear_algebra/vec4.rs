@@ -40,9 +40,9 @@ impl From<(f32, f32, f32, f32)> for Vec4 {
     }
 }
 
-impl Into<(f32, f32, f32, f32)> for Vec4 {
-    fn into(self) -> (f32, f32, f32, f32) {
-        (self.x, self.y, self.z, self.w)
+impl From<Vec4> for (f32, f32, f32, f32) {
+    fn from(val: Vec4) -> Self {
+        (val.x, val.y, val.z, val.w)
     }
 }
 

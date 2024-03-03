@@ -129,7 +129,7 @@ pub fn triangulate(vertices: &[Vec3], out_triangles: &mut Vec<[usize; 3]>) {
     } else {
         // Ear-clipping for arbitrary polygon (requires one additional memory allocation, so
         // relatively slow)
-        if let Ok(normal) = super::get_polygon_normal(&vertices) {
+        if let Ok(normal) = super::get_polygon_normal(vertices) {
             let plane_class = super::classify_plane(normal);
             let mut polygon = Polygon {
                 vertices: vertices

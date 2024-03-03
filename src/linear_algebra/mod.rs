@@ -41,15 +41,6 @@ where
         Self { x, y, w, h }
     }
 
-    pub fn default() -> Self {
-        Self {
-            x: T::default(),
-            y: T::default(),
-            w: T::default(),
-            h: T::default(),
-        }
-    }
-
     #[must_use = "this method creates new instance of rect"]
     pub fn inflate(&self, dw: T, dh: T) -> Self {
         Self {

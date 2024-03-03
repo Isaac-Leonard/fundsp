@@ -49,7 +49,7 @@ impl Plane {
 
     #[inline]
     pub fn dot(&self, point: &Vec3) -> f32 {
-        self.normal.dot(&point) + self.d
+        self.normal.dot(point) + self.d
     }
 
     #[inline]
