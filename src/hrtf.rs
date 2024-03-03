@@ -1,4 +1,8 @@
-use crate::hacker::{AudioNode, U1, U2};
+use std::path::Path;
+
+use hrtf::HrirSphere;
+
+use crate::hacker::{An, AudioNode, U1, U2};
 use crate::linear_algebra::mat3::Mat3;
 use crate::linear_algebra::vec3::Vec3;
 
@@ -286,4 +290,9 @@ impl From<Vec3> for hrtf::Vec3 {
             z: val.z,
         }
     }
+}
+
+pub fn hrtf<P: AsRef<Path>>(path: P, sample_rate: u32) -> An<Hrtf> {
+    let sphere = HrirSphere::from_file(path, sample_rate).unwrap();
+    An(Hrtf::new(sphere, Vec3::ZERO))
 }
