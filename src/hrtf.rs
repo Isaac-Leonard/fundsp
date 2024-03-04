@@ -114,7 +114,7 @@ pub struct Hrtf {
 impl Hrtf {
     /// Creates new HRTF renderer using specified HRTF sphere. See module docs for more info.
     pub fn new(hrir_sphere: hrtf::HrirSphere, position: Vec3) -> Self {
-        Self {
+        let res = Self {
             processor: hrtf::HrtfProcessor::new(
                 hrir_sphere,
                 HRTF_INTERPOLATION_STEPS,
@@ -129,11 +129,13 @@ impl Hrtf {
             radius: 1.0,
             max_distance: std::f32::MAX,
             rolloff_factor: 1.0,
-            prev_left_samples: Default::default(),
-            prev_right_samples: Default::default(),
+            prev_left_samples: vec![0.; 511],
+            prev_right_samples: vec![0.; 511],
             prev_sampling_vector: Vec3::new(0.0, 0.0, 1.0),
             prev_distance_gain: None,
-        }
+        };
+        eprintln!("Sphere_length: {}", res.processor.hrtf_sphere().length - 1);
+        res
     }
 
     // Distance models were taken from OpenAL Specification because it looks like they're
@@ -292,5 +294,5 @@ impl From<Vec3> for hrtf::Vec3 {
 
 pub fn hrtf<P: AsRef<Path>>(path: P, sample_rate: u32) -> An<Hrtf> {
     let sphere = HrirSphere::from_file(path, sample_rate).unwrap();
-    An(Hrtf::new(sphere, Vec3::ZERO))
+    An(Hrtf::new(sphere, Vec3::new(0., 0., 10.)))
 }
