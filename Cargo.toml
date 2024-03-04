@@ -24,7 +24,7 @@ dyn-clone = "1.0.16"
 symphonia = { version = "0.5.3", optional = true, features = ["all"] }
 thingbuf = "0.1.4"
 funutd = "0.14.0"
-hrtf = "0.8.1"
+hrtf = {"git"="https://github.com/Isaac-Leonard/hrtf", "branch"="performance"}
 
 [features]
 default = ["files"]
@@ -38,7 +38,7 @@ criterion = "0.5.1"
 midi-msg = "0.5.0"
 midir = "0.9.1"
 read_input = "0.8.6"
-assert_no_alloc = "1.1.2"
+assert_no_alloc = {"git"="https://github.com/Windfisch/rust-assert-no-alloc", "features"=["backtrace"]}
 eframe = "0.25.0"
 rayon = "1.8.0"
 
